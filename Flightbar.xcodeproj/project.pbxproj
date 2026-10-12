@@ -1,0 +1,369 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0B20DE1245ADF2368794D661 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B80EAA7AB5EF9E08CCC224DD /* Assets.xcassets */; };
+		12076073C8F9EA17BFB19ED0 /* FlightCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC070B25C35F9D6EC7DC384 /* FlightCardView.swift */; };
+		23610C3FAA27865B5C75A829 /* PlaneArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACBF9FBD7A9693A68CD7884 /* PlaneArtwork.swift */; };
+		2FCCB738B941EFEDE48FB48E /* MenuBarGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7824474DC95B8D1DB3607296 /* MenuBarGeometry.swift */; };
+		550034956AF511C260655F2A /* Catalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA78D5B482CA10EF2B4C1D57 /* Catalog.swift */; };
+		5F3485BF7BBAC8AED83BAAFE /* FlightbarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CCAD1B5EEF73DD99AA6FD8 /* FlightbarApp.swift */; };
+		6271A04B56F4C82BC24053E5 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080AD0C0B13405A46AC33C18 /* LocationService.swift */; };
+		A3F047A597619A2B63CDEC44 /* TrafficClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFFBF7896CFCBCA96B78C70 /* TrafficClient.swift */; };
+		CA1999F06A3F71D1BBC0B471 /* FlightLane.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8680099C739FDAC9AB75804 /* FlightLane.swift */; };
+		EA1143B62A01A1348702ECC5 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2DA6396FF3D9613CD19FA5 /* AppModel.swift */; };
+		F10F4553ED7EF6B3AE7D3455 /* Aircraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719BF8CE941F41B98E734353 /* Aircraft.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		080AD0C0B13405A46AC33C18 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		0AC070B25C35F9D6EC7DC384 /* FlightCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightCardView.swift; sourceTree = "<group>"; };
+		32CCAD1B5EEF73DD99AA6FD8 /* FlightbarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightbarApp.swift; sourceTree = "<group>"; };
+		719BF8CE941F41B98E734353 /* Aircraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Aircraft.swift; sourceTree = "<group>"; };
+		7824474DC95B8D1DB3607296 /* MenuBarGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarGeometry.swift; sourceTree = "<group>"; };
+		7ACBF9FBD7A9693A68CD7884 /* PlaneArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaneArtwork.swift; sourceTree = "<group>"; };
+		9026FF04E759CB20302D4A12 /* Flightbar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flightbar.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9DFFBF7896CFCBCA96B78C70 /* TrafficClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrafficClient.swift; sourceTree = "<group>"; };
+		9E2DA6396FF3D9613CD19FA5 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		B80EAA7AB5EF9E08CCC224DD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D8680099C739FDAC9AB75804 /* FlightLane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightLane.swift; sourceTree = "<group>"; };
+		EA78D5B482CA10EF2B4C1D57 /* Catalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Catalog.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		1F536F2943DEA465093C9022 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				719BF8CE941F41B98E734353 /* Aircraft.swift */,
+				9E2DA6396FF3D9613CD19FA5 /* AppModel.swift */,
+				EA78D5B482CA10EF2B4C1D57 /* Catalog.swift */,
+				32CCAD1B5EEF73DD99AA6FD8 /* FlightbarApp.swift */,
+				0AC070B25C35F9D6EC7DC384 /* FlightCardView.swift */,
+				D8680099C739FDAC9AB75804 /* FlightLane.swift */,
+				080AD0C0B13405A46AC33C18 /* LocationService.swift */,
+				7824474DC95B8D1DB3607296 /* MenuBarGeometry.swift */,
+				7ACBF9FBD7A9693A68CD7884 /* PlaneArtwork.swift */,
+				9DFFBF7896CFCBCA96B78C70 /* TrafficClient.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		98E4034DE39646C0D4BD7859 = {
+			isa = PBXGroup;
+			children = (
+				E0E40F2B79288CF3AE64B1DC /* Resources */,
+				1F536F2943DEA465093C9022 /* Sources */,
+				FA03CBBCD08D8468DFD08DB6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E0E40F2B79288CF3AE64B1DC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B80EAA7AB5EF9E08CCC224DD /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		FA03CBBCD08D8468DFD08DB6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9026FF04E759CB20302D4A12 /* Flightbar.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		32D0896565F71BC0A2983DB3 /* Flightbar */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 85689DE02FF4CE7C1CCB7A9A /* Build configuration list for PBXNativeTarget "Flightbar" */;
+			buildPhases = (
+				03F6299A26416BBC529078FF /* Sources */,
+				CAD0DC8865EE4F480E9D5633 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Flightbar;
+			packageProductDependencies = (
+			);
+			productName = Flightbar;
+			productReference = 9026FF04E759CB20302D4A12 /* Flightbar.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2C449E1F54DF9FDFEB1F7594 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					32D0896565F71BC0A2983DB3 = {
+						DevelopmentTeam = 2GCV66YKTM;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 64FF93608D81405AD0233914 /* Build configuration list for PBXProject "Flightbar" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 98E4034DE39646C0D4BD7859;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				32D0896565F71BC0A2983DB3 /* Flightbar */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CAD0DC8865EE4F480E9D5633 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0B20DE1245ADF2368794D661 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		03F6299A26416BBC529078FF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F10F4553ED7EF6B3AE7D3455 /* Aircraft.swift in Sources */,
+				EA1143B62A01A1348702ECC5 /* AppModel.swift in Sources */,
+				550034956AF511C260655F2A /* Catalog.swift in Sources */,
+				12076073C8F9EA17BFB19ED0 /* FlightCardView.swift in Sources */,
+				CA1999F06A3F71D1BBC0B471 /* FlightLane.swift in Sources */,
+				5F3485BF7BBAC8AED83BAAFE /* FlightbarApp.swift in Sources */,
+				6271A04B56F4C82BC24053E5 /* LocationService.swift in Sources */,
+				2FCCB738B941EFEDE48FB48E /* MenuBarGeometry.swift in Sources */,
+				23610C3FAA27865B5C75A829 /* PlaneArtwork.swift in Sources */,
+				A3F047A597619A2B63CDEC44 /* TrafficClient.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		9968F0EB9860E87278849FDC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = YES;
+				CODE_SIGNING_REQUIRED = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 2GCV66YKTM;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		B9F1F75BBF64EF0E069DCEEF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGNING_ALLOWED = YES;
+				CODE_SIGNING_REQUIRED = YES;
+				CODE_SIGN_ENTITLEMENTS = Flightbar.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2GCV66YKTM;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.uluersolutions.flightbar;
+				PRODUCT_NAME = Flightbar;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		DFD9BCF8813D1318188484AE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = YES;
+				CODE_SIGNING_REQUIRED = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 2GCV66YKTM;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		FBFA34F21AF90E0687D768B5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGNING_ALLOWED = YES;
+				CODE_SIGNING_REQUIRED = YES;
+				CODE_SIGN_ENTITLEMENTS = Flightbar.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2GCV66YKTM;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.uluersolutions.flightbar;
+				PRODUCT_NAME = Flightbar;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		64FF93608D81405AD0233914 /* Build configuration list for PBXProject "Flightbar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9968F0EB9860E87278849FDC /* Debug */,
+				DFD9BCF8813D1318188484AE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		85689DE02FF4CE7C1CCB7A9A /* Build configuration list for PBXNativeTarget "Flightbar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FBFA34F21AF90E0687D768B5 /* Debug */,
+				B9F1F75BBF64EF0E069DCEEF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2C449E1F54DF9FDFEB1F7594 /* Project object */;
+}

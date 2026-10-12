@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="sky" x1="512" y1="0" x2="512" y2="1024" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3A4552"/>
+      <stop offset="0.45" stop-color="#171C22"/>
+      <stop offset="1" stop-color="#090B0D"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="512" cy="490" r="360" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FF5A49" stop-opacity="0.28"/>
+      <stop offset="0.58" stop-color="#FF5A49" stop-opacity="0.07"/>
+      <stop offset="1" stop-color="#FF5A49" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="metal" x1="512" y1="150" x2="512" y2="930" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FF9A88"/>
+      <stop offset="0.42" stop-color="#FF5A49"/>
+      <stop offset="1" stop-color="#E23C30"/>
+    </linearGradient>
+    <filter id="lift" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="14" flood-color="#000000" flood-opacity="0.36"/>
+    </filter>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#sky)"/>
+  <rect width="1024" height="1024" fill="url(#glow)"/>
+  <g filter="url(#lift)">
+    <path fill="url(#metal)" d="M512 150
+      L558 332
+      L578 418
+      L900 628
+      L828 708
+      L562 548
+      L548 728
+      L698 872
+      L632 934
+      L530 828
+      L494 828
+      L392 934
+      L326 872
+      L476 728
+      L462 548
+      L196 708
+      L124 628
+      L446 418
+      L466 332
+      Z"/>
+  </g>
+</svg>

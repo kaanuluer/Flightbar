@@ -1,0 +1,7 @@
+build/
+tmp/
+.DS_Store
+.download-counter-admin
+xcuserdata/
+*.xcuserstate
+DerivedData/

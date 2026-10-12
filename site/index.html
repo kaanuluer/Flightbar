@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flightbar — The aircraft overhead, in the menu bar</title>
+  <meta name="description" content="Flightbar flies an aircraft that enters your chosen radius across the macOS menu bar, from the clock to the Apple logo. No account. macOS only.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#content">Skip to content</a>
+  <header class="wrap nav">
+    <a class="wordmark" href="#content">Flightbar</a>
+    <ul class="nav-links">
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#screen">On screen</a></li>
+      <li><a href="#settings">Settings</a></li>
+      <li><a href="#privacy">Privacy</a></li>
+      <li><a href="#download">Download</a></li>
+    </ul>
+  </header>
+
+  <main id="content">
+    <section class="hero">
+      <div class="wrap">
+        <p class="eyebrow">Uluer Solutions · macOS only</p>
+        <h1>From the clock to the Apple logo.</h1>
+        <p class="lede">Flightbar watches the air around you. When an aircraft enters the radius you chose, an icon appears in the menu bar and flies from the clock to the Apple logo. The pointer stops it, and the flight card opens.</p>
+        <div class="actions">
+          <a class="button" href="download/Flightbar.zip" data-download>Download Flightbar</a>
+          <p class="meta">macOS 14 or later · Apple silicon</p>
+          <p class="download-count" data-download-count hidden></p>
+        </div>
+      </div>
+      <div class="menubar">
+        <img src="images/menu-bar.png" width="3456" height="66" alt="The macOS menu bar. The Apple logo is on the left, the clock is on the right, and a red aircraft icon is flying between them.">
+      </div>
+    </section>
+
+    <section class="section" id="how">
+      <div class="wrap">
+        <h2>How it works</h2>
+        <p class="intro">Click the aircraft icon in the menu bar to open the menu. If location access is missing, the status line says so.</p>
+        <ol class="steps">
+          <li>
+            <h3>Location and range</h3>
+            <p>On first launch, allow location access. Keep precise location on; distance is calculated from it. If it is off, turn Flightbar on in System Settings → Privacy &amp; Security → Location Services.</p>
+          </li>
+          <li>
+            <h3>From the clock to the logo</h3>
+            <p>When an aircraft in the air enters the radius, the icon leaves the clock, travels along the menu bar, and arrives at the Apple logo.</p>
+          </li>
+          <li>
+            <h3>The card</h3>
+            <p>Move the pointer onto the icon. The flight pauses. The card shows the callsign, airline, registration, aircraft type, distance, altitude, speed, heading, and whether it is climbing or descending.</p>
+          </li>
+          <li>
+            <h3>The menu</h3>
+            <p>Change the range and aircraft color here. Sample flight shows a flight without waiting. Check now refreshes the data. Quit closes the app.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="screen">
+      <div class="wrap">
+        <h2>On screen</h2>
+        <p class="intro">The images were taken from the running app. The icon color and the range follow the choice in the menu.</p>
+        <div class="shots">
+          <figure class="shot-flight">
+            <img src="images/menu-bar-flight.png" width="1436" height="66" alt="A red aircraft icon flying toward the clock on the right side of the menu bar.">
+            <figcaption>The aircraft in the menu bar, on the path between the clock and the Apple logo.</figcaption>
+          </figure>
+          <figure>
+            <img src="images/flight-card.png" width="870" height="520" alt="The THY1 flight card under the red aircraft in the menu bar. Turkish Airlines, TC-JJZ, Boeing 777-300ER, 2.4 km, plus altitude, speed, heading, and descent.">
+            <figcaption>The pointer stops the icon. The card shows the callsign, airline, registration, type, distance, altitude, speed, heading, and vertical speed.</figcaption>
+          </figure>
+          <figure>
+            <img src="images/settings-menu.png" width="1070" height="815" alt="The Flightbar menu. Range is set to 20 km, with options from 1 to 50 km open. Aircraft color is Red. Sample flight, Check now, and Quit are visible.">
+            <figcaption>Range and color are in the same menu. The choice is remembered. Sample flight lets you try it right away.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="settings">
+      <div class="wrap">
+        <h2>Range and color</h2>
+        <p class="intro">Both change from the menu. The choice is remembered.</p>
+        <div class="settings">
+          <div class="panel">
+            <h3>Range</h3>
+            <p>The radius an aircraft has to enter. The default is 3 km.</p>
+            <ul class="chips">
+              <li>1 km</li>
+              <li>2 km</li>
+              <li class="default">3 km</li>
+              <li>5 km</li>
+              <li>8 km</li>
+              <li>10 km</li>
+              <li>15 km</li>
+              <li>20 km</li>
+              <li>30 km</li>
+              <li>50 km</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <h3>Aircraft color</h3>
+            <p>The color of the icon in the menu bar. The default is white.</p>
+            <ul class="swatches">
+              <li><span class="dot" style="background:#ffffff"></span>White</li>
+              <li><span class="dot" style="background:#ffd62e"></span>Yellow</li>
+              <li><span class="dot" style="background:#ff851f"></span>Orange</li>
+              <li><span class="dot" style="background:#ff4545"></span>Red</li>
+              <li><span class="dot" style="background:#4cd963"></span>Green</li>
+              <li><span class="dot" style="background:#52e6f2"></span>Cyan</li>
+              <li><span class="dot" style="background:#5c9eff"></span>Blue</li>
+              <li><span class="dot" style="background:#b873ff"></span>Purple</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="privacy">
+      <div class="wrap">
+        <h2>Privacy</h2>
+        <ul class="privacy">
+          <li>
+            <h3>Location stays on this Mac</h3>
+            <p>Your location is not sent to a server. Distance is calculated on this Mac, between your position and the aircraft.</p>
+          </li>
+          <li>
+            <h3>Public flight data</h3>
+            <p>Aircraft are read from adsb.lol. If that does not respond, adsb.fi is used. There is no account, sign-up, or key.</p>
+          </li>
+          <li>
+            <h3>Names stay local</h3>
+            <p>Airline and aircraft type names come from the catalog inside the app. It does not connect to another account.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <section class="download" id="download">
+    <div class="wrap">
+      <h2>Download</h2>
+      <p class="intro">macOS only. Requires macOS 14 or later and Apple silicon. There is no separate build for Intel.</p>
+      <a class="button" href="download/Flightbar.zip" data-download>Flightbar.zip</a>
+      <p class="download-count" data-download-count hidden></p>
+      <ol class="install">
+        <li>Unzip the file and move Flightbar to the Applications folder.</li>
+        <li>If macOS cannot verify the app, right-click Flightbar and choose Open.</li>
+        <li>Allow location access. Precise location is required for the range.</li>
+      </ol>
+    </div>
+  </section>
+
+  <footer class="wrap foot">
+    <p>Flightbar · Uluer Solutions</p>
+  </footer>
+  <script src="counter.js"></script>
+</body>
+</html>

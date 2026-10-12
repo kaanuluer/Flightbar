@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleExecutable</key>
+	<string>Flightbar</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.uluersolutions.flightbar</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>Flightbar</string>
+	<key>CFBundleDisplayName</key>
+	<string>Flightbar</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>14.0</string>
+	<key>LSUIElement</key>
+	<string>1</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Flightbar uses your location to show aircraft within 3 km of you in the menu bar.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Flightbar uses your location to show aircraft within 3 km of you in the menu bar.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Flightbar uses your location to show aircraft within 3 km of you in the menu bar.</string>
+	<key>NSLocationDefaultAccuracyReduced</key>
+	<false/>
+	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<dict>
+		<key>FlightbarPrecise</key>
+		<string>Precise location is required to distinguish aircraft within 3 km.</string>
+	</dict>
+</dict>
+</plist>
