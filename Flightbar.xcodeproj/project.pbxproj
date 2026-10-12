@@ -18,6 +18,7 @@
 		CA1999F06A3F71D1BBC0B471 /* FlightLane.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8680099C739FDAC9AB75804 /* FlightLane.swift */; };
 		EA1143B62A01A1348702ECC5 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2DA6396FF3D9613CD19FA5 /* AppModel.swift */; };
 		F10F4553ED7EF6B3AE7D3455 /* Aircraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719BF8CE941F41B98E734353 /* Aircraft.swift */; };
+		B22DF002C1D100FF23456789 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11CE001B0C0FFEE12345678 /* Preferences.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		719BF8CE941F41B98E734353 /* Aircraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Aircraft.swift; sourceTree = "<group>"; };
 		7824474DC95B8D1DB3607296 /* MenuBarGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarGeometry.swift; sourceTree = "<group>"; };
 		7ACBF9FBD7A9693A68CD7884 /* PlaneArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaneArtwork.swift; sourceTree = "<group>"; };
+		A11CE001B0C0FFEE12345678 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		9026FF04E759CB20302D4A12 /* Flightbar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flightbar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DFFBF7896CFCBCA96B78C70 /* TrafficClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrafficClient.swift; sourceTree = "<group>"; };
 		9E2DA6396FF3D9613CD19FA5 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
@@ -48,6 +50,7 @@
 				080AD0C0B13405A46AC33C18 /* LocationService.swift */,
 				7824474DC95B8D1DB3607296 /* MenuBarGeometry.swift */,
 				7ACBF9FBD7A9693A68CD7884 /* PlaneArtwork.swift */,
+				A11CE001B0C0FFEE12345678 /* Preferences.swift */,
 				9DFFBF7896CFCBCA96B78C70 /* TrafficClient.swift */,
 			);
 			path = Sources;
@@ -158,6 +161,7 @@
 				6271A04B56F4C82BC24053E5 /* LocationService.swift in Sources */,
 				2FCCB738B941EFEDE48FB48E /* MenuBarGeometry.swift in Sources */,
 				23610C3FAA27865B5C75A829 /* PlaneArtwork.swift in Sources */,
+				B22DF002C1D100FF23456789 /* Preferences.swift in Sources */,
 				A3F047A597619A2B63CDEC44 /* TrafficClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -244,13 +248,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 2GCV66YKTM;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.uluersolutions.flightbar;
 				PRODUCT_NAME = Flightbar;
 				SDKROOT = macosx;
@@ -329,13 +333,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 2GCV66YKTM;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.uluersolutions.flightbar;
 				PRODUCT_NAME = Flightbar;
 				SDKROOT = macosx;

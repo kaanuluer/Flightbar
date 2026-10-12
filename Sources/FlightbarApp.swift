@@ -1,4 +1,5 @@
 import AppKit
+import Combine
 import SwiftUI
 
 @main
@@ -10,21 +11,8 @@ struct FlightbarApp: App {
         // AppDelegate. MenuBarExtra is not used: on macOS 26 and 27 it is dropped
         // when the app is an agent, which left Flightbar running with no icon.
         Settings {
-            FlightbarSettings()
+            PreferencesView()
         }
-    }
-}
-
-struct FlightbarSettings: View {
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Flightbar")
-                .font(.title2.weight(.semibold))
-            Text("The aircraft icon stays in the menu bar. Location is used only while Flightbar is open, to measure aircraft inside the range you chose. Flightbar does not ask for Device Control and Data Access.")
-                .fixedSize(horizontal: false, vertical: true)
-        }
-        .padding(20)
-        .frame(width: 420, alignment: .leading)
     }
 }
 
@@ -32,7 +20,9 @@ struct FlightbarSettings: View {
 final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWindowDelegate {
     private var statusItem: NSStatusItem?
     private var launchWindow: NSWindow?
+    private var preferencesWindow: NSWindow?
     private var screenObserver: NSObjectProtocol?
+    private var modelWatch: AnyCancellable?
     private var userConfirmedVisible = false
 
     private enum Keys {
@@ -56,6 +46,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
         installMainMenu()
         installStatusItem()
         AppModel.shared.start()
+        modelWatch = AppModel.shared.objectWillChange.sink { [weak self] _ in
+            DispatchQueue.main.async {
+                MainActor.assumeIsolated {
+                    guard let self else { return }
+                    if let item = self.statusItem {
+                        self.applyIcon(to: item)
+                    }
+                    self.returnToMenuBarIfSettled()
+                }
+            }
+        }
+        if AppModel.shared.needsPlaceChoice {
+            showPreferences()
+        }
         scheduleVisibilityChecks()
         screenObserver = NotificationCenter.default.addObserver(
             forName: NSApplication.didChangeScreenParametersNotification,
@@ -83,16 +87,65 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
         populate(menu)
     }
 
-    func windowWillClose(_: Notification) {
+    func windowWillClose(_ notification: Notification) {
+        let window = notification.object as? NSWindow
         let current = placement()
-        launchWindow = nil
-        if userConfirmedVisible || current == .onScreen {
-            userConfirmedVisible = false
-            UserDefaults.standard.set(true, forKey: Keys.dismissedLaunchWindow)
-            DispatchQueue.main.async {
-                NSApp.setActivationPolicy(.accessory)
+        if window == launchWindow {
+            launchWindow = nil
+            if userConfirmedVisible || current == .onScreen {
+                UserDefaults.standard.set(true, forKey: Keys.dismissedLaunchWindow)
             }
         }
+        if window == preferencesWindow {
+            preferencesWindow = nil
+        }
+        userConfirmedVisible = false
+        if current == .onScreen {
+            DispatchQueue.main.async { [weak self] in
+                self?.returnToMenuBarIfSettled()
+            }
+        }
+    }
+
+    /// A menu-bar app stays an agent once its windows are gone and the icon is on screen.
+    /// While a location prompt is still unanswered, Flightbar stays in front so macOS can show it.
+    private func returnToMenuBarIfSettled() {
+        let waitingForLocationPrompt = AppModel.shared.placeSource == .device
+            && AppModel.shared.authorization == .notDetermined
+        guard launchWindow == nil, preferencesWindow == nil, !waitingForLocationPrompt else { return }
+        guard placement() == .onScreen else { return }
+        guard NSApp.activationPolicy() != .accessory else { return }
+        NSApp.setActivationPolicy(.accessory)
+    }
+
+    private func showPreferences() {
+        if let preferencesWindow {
+            NSApp.setActivationPolicy(.regular)
+            preferencesWindow.makeKeyAndOrderFront(nil)
+            NSApp.activate()
+            return
+        }
+        let host = NSHostingView(rootView: PreferencesView())
+        let width: CGFloat = 460
+        host.frame = NSRect(x: 0, y: 0, width: width, height: 10)
+        host.layoutSubtreeIfNeeded()
+        let height = max(360, host.fittingSize.height)
+        host.frame = NSRect(x: 0, y: 0, width: width, height: height)
+        let window = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: width, height: height),
+            styleMask: [.titled, .closable, .miniaturizable],
+            backing: .buffered,
+            defer: false
+        )
+        window.title = "Preferences"
+        window.contentView = host
+        window.isReleasedWhenClosed = false
+        window.delegate = self
+        window.center()
+        preferencesWindow = window
+        NSApp.setActivationPolicy(.regular)
+        window.makeKeyAndOrderFront(nil)
+        NSApp.activate()
     }
 
     private func installMainMenu() {
@@ -134,7 +187,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
         guard let button = item.button else { return }
         let image = MenuBarMark.templateImage
         button.image = image
-        button.imagePosition = .imageOnly
+        let model = AppModel.shared
+        if model.showsPlaneCount {
+            button.title = "\(model.overhead.count)"
+            button.imagePosition = .imageLeft
+            button.font = NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .medium)
+        } else {
+            button.title = ""
+            button.imagePosition = .imageOnly
+        }
         (button.cell as? NSButtonCell)?.imageScaling = .scaleProportionallyDown
         button.toolTip = "Flightbar"
         button.setAccessibilityLabel("Flightbar")
@@ -262,10 +323,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
     private func populate(_ menu: NSMenu) {
         let model = AppModel.shared
         menu.removeAllItems()
-        addLabel("Flightbar", to: menu)
-        addLabel(model.statusLine, to: menu)
-        addLabel(model.detailLine, to: menu)
-        addLabel("Flies from the clock to the Apple logo. Stops when the pointer touches it.", to: menu)
+        addLabel("Flightbar", to: menu, style: .title)
+        addLabel(model.statusLine, to: menu, style: .primary)
+        addLabel(model.detailLine, to: menu, style: .primary)
+        addLabel("Select an aircraft for its details. The flight across the menu bar is off unless you turn it on.", to: menu, style: .caption)
         menu.addItem(.separator())
 
         let range = NSMenuItem(title: "Range: \(Radar.label(model.radiusKm))", action: nil, keyEquivalent: "")
@@ -295,11 +356,45 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
         color.submenu = colorMenu
         menu.addItem(color)
 
+        let flags = NSMenuItem(title: "Flags: \(model.flagFilter.menuTitle)", action: nil, keyEquivalent: "")
+        let flagsMenu = NSMenu()
+        flagsMenu.autoenablesItems = false
+        for filter in DbFlagFilter.allCases {
+            let item = NSMenuItem(title: filter.menuTitle, action: #selector(selectFlag(_:)), keyEquivalent: "")
+            item.target = self
+            item.state = model.flagFilter == filter ? .on : .off
+            item.representedObject = filter.rawValue
+            item.toolTip = filter.explanation
+            flagsMenu.addItem(item)
+        }
+        flags.submenu = flagsMenu
+        menu.addItem(flags)
+
+        addToggle(
+            model.showsPlaneCount ? "Hide aircraft count" : "Show aircraft count",
+            on: model.showsPlaneCount,
+            action: #selector(toggleCount(_:)),
+            to: menu
+        )
+        addToggle(
+            "Fly across the menu bar",
+            on: model.fliesAcrossMenuBar,
+            action: #selector(toggleFly(_:)),
+            to: menu
+        )
+        addToggle(
+            "Notify when an aircraft enters",
+            on: model.notificationsEnabled,
+            action: #selector(toggleNotify(_:)),
+            to: menu
+        )
+        addAction("Preferences…", action: #selector(openPreferences(_:)), to: menu)
+
         if !model.overhead.isEmpty {
             menu.addItem(.separator())
-            addLabel("Overhead now", to: menu)
+            addLabel("Overhead now", to: menu, style: .heading)
             for aircraft in model.overhead {
-                addLabel(aircraft.menuLine, to: menu)
+                addAircraft(aircraft, to: menu)
             }
         }
         let passed = model.recent.filter { recent in
@@ -307,14 +402,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
         }
         if !passed.isEmpty {
             menu.addItem(.separator())
-            addLabel("Just entered", to: menu)
+            addLabel("Just entered", to: menu, style: .heading)
             for aircraft in passed {
-                addLabel(aircraft.menuLine, to: menu)
+                addAircraft(aircraft, to: menu)
             }
         }
 
         menu.addItem(.separator())
-        addAction("Sample flight", action: #selector(sampleFlight(_:)), to: menu)
+        addAction("Show sample aircraft", action: #selector(sampleFlight(_:)), to: menu)
         addAction("Check now", action: #selector(checkNow(_:)), to: menu)
         if model.showsLocationSettings {
             addAction("Open Location Settings", action: #selector(openLocationSettings(_:)), to: menu)
@@ -324,10 +419,53 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
         quit.keyEquivalent = "q"
     }
 
-    private func addLabel(_ title: String, to menu: NSMenu) {
+    private enum LabelStyle {
+        case title
+        case heading
+        case primary
+        case caption
+    }
+
+    private func addLabel(_ title: String, to menu: NSMenu, style: LabelStyle) {
         let item = NSMenuItem(title: title, action: nil, keyEquivalent: "")
-        item.isEnabled = false
+        let font: NSFont
+        let color: NSColor
+        switch style {
+        case .title:
+            font = NSFont.menuFont(ofSize: 0)
+            color = .labelColor
+        case .heading:
+            font = NSFont.systemFont(ofSize: NSFont.smallSystemFontSize, weight: .semibold)
+            color = .labelColor
+        case .primary:
+            font = NSFont.menuFont(ofSize: 0)
+            color = .labelColor
+        case .caption:
+            font = NSFont.menuFont(ofSize: NSFont.smallSystemFontSize)
+            color = .secondaryLabelColor
+        }
+        item.attributedTitle = NSAttributedString(string: title, attributes: [
+            .foregroundColor: color,
+            .font: font
+        ])
+        item.isEnabled = true
         menu.addItem(item)
+    }
+
+    private func addAircraft(_ aircraft: Aircraft, to menu: NSMenu) {
+        let item = NSMenuItem(title: aircraft.menuLine, action: #selector(showAircraft(_:)), keyEquivalent: "")
+        item.target = self
+        item.representedObject = aircraft.hex
+        item.attributedTitle = NSAttributedString(string: aircraft.menuLine, attributes: [
+            .foregroundColor: NSColor.labelColor,
+            .font: NSFont.menuFont(ofSize: 0)
+        ])
+        menu.addItem(item)
+    }
+
+    private func addToggle(_ title: String, on: Bool, action: Selector, to menu: NSMenu) {
+        let item = addAction(title, action: action, to: menu)
+        item.state = on ? .on : .off
     }
 
     @discardableResult
@@ -347,6 +485,36 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
         guard let raw = sender.representedObject as? String,
               let tint = PlaneTint(rawValue: raw) else { return }
         AppModel.shared.planeColor = tint
+    }
+
+    @objc private func selectFlag(_ sender: NSMenuItem) {
+        guard let raw = sender.representedObject as? String,
+              let filter = DbFlagFilter(rawValue: raw) else { return }
+        AppModel.shared.flagFilter = filter
+    }
+
+    @objc private func toggleCount(_: NSMenuItem) {
+        AppModel.shared.showsPlaneCount.toggle()
+    }
+
+    @objc private func toggleFly(_: NSMenuItem) {
+        AppModel.shared.fliesAcrossMenuBar.toggle()
+    }
+
+    @objc private func toggleNotify(_: NSMenuItem) {
+        AppModel.shared.notificationsEnabled.toggle()
+    }
+
+    @objc private func openPreferences(_: NSMenuItem) {
+        showPreferences()
+    }
+
+    @objc private func showAircraft(_ sender: NSMenuItem) {
+        guard let hex = sender.representedObject as? String,
+              let aircraft = AppModel.shared.aircraft(hex: hex) else { return }
+        let anchor = statusItem?.button?.window?.frame
+        let point = anchor.map { NSPoint(x: $0.midX, y: $0.minY) }
+        FlightLane.shared.showDetails(aircraft, under: point)
     }
 
     @objc private func sampleFlight(_: NSMenuItem) {

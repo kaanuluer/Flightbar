@@ -9,6 +9,7 @@ swiftc -parse-as-library -O -target arm64-apple-macos14.0 \
   -framework SwiftUI \
   -framework CoreLocation \
   -framework QuartzCore \
+  -framework UserNotifications \
   -o "$APP/Contents/MacOS/Flightbar" \
   Sources/*.swift
 mkdir -p "$APP/Contents/Resources"

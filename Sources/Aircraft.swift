@@ -13,6 +13,15 @@ struct Aircraft: Identifiable, Equatable {
     var longitude: Double
     var distanceKm: Double
     var emergency: String?
+    var geometricAltitudeFeet: Double? = nil
+    var geometricVerticalRateFPM: Double? = nil
+    var squawk: String? = nil
+    var trueHeadingDegrees: Double? = nil
+    var magneticHeadingDegrees: Double? = nil
+    var category: String? = nil
+    var dbFlags: Int? = nil
+    var typeDescription: String? = nil
+    var isSample: Bool = false
 
     var id: String { hex }
 
@@ -62,7 +71,11 @@ struct Aircraft: Identifiable, Equatable {
 
     var headingText: String {
         guard let trackDegrees else { return "Unknown" }
-        let normalized = (trackDegrees.truncatingRemainder(dividingBy: 360) + 360)
+        return Self.direction(trackDegrees)
+    }
+
+    static func direction(_ degrees: Double) -> String {
+        let normalized = (degrees.truncatingRemainder(dividingBy: 360) + 360)
             .truncatingRemainder(dividingBy: 360)
         let names = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
         let index = Int((normalized + 22.5) / 45.0) % 8
@@ -86,6 +99,45 @@ struct Aircraft: Identifiable, Equatable {
         return emergency.lowercased() != "none" && !emergency.isEmpty
     }
 
+    var geometricAltitudeText: String? {
+        guard let geometricAltitudeFeet else { return nil }
+        let meters = geometricAltitudeFeet * 0.3048
+        let feet = Self.whole.string(from: NSNumber(value: geometricAltitudeFeet)) ?? "\(Int(geometricAltitudeFeet))"
+        let metric = Self.whole.string(from: NSNumber(value: meters)) ?? "\(Int(meters))"
+        return "\(feet) ft · \(metric) m"
+    }
+
+    var positionText: String {
+        String(format: "%.5f, %.5f", latitude, longitude)
+    }
+
+    /// Letters match readsb's dbFlags bitfield, which adsb.lol and adsb.fi forward.
+    /// Military is bit 0 (`dbFlags & 1`). That is the aircraft tar1090 keeps when its U button is on.
+    var flagLabels: [String] {
+        let flags = dbFlags ?? 0
+        var labels: [String] = []
+        if flags & 1 != 0 { labels.append("Military (U)") }
+        if flags & 2 != 0 { labels.append("Interesting") }
+        if flags & 4 != 0 { labels.append("PIA") }
+        if flags & 8 != 0 { labels.append("LADD") }
+        return labels
+    }
+
+    func matches(_ filter: DbFlagFilter) -> Bool {
+        switch filter {
+        case .all:
+            return true
+        case .military:
+            return (dbFlags ?? 0) & 1 != 0
+        case .interesting:
+            return (dbFlags ?? 0) & 2 != 0
+        case .pia:
+            return (dbFlags ?? 0) & 4 != 0
+        case .ladd:
+            return (dbFlags ?? 0) & 8 != 0
+        }
+    }
+
     private static let whole: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.locale = Locale(identifier: "en_US")
@@ -102,6 +154,43 @@ struct Aircraft: Identifiable, Equatable {
         formatter.maximumFractionDigits = 1
         return formatter
     }()
+}
+
+/// readsb database flags, as forwarded by adsb.lol and adsb.fi.
+/// `military` is what the U button on tar1090 filters to (`onlyMilitary`, `dbFlags & 1`).
+enum DbFlagFilter: String, CaseIterable, Identifiable {
+    case all
+    case military
+    case interesting
+    case pia
+    case ladd
+
+    var id: String { rawValue }
+
+    var menuTitle: String {
+        switch self {
+        case .all: return "All aircraft"
+        case .military: return "Military (U)"
+        case .interesting: return "Interesting"
+        case .pia: return "PIA"
+        case .ladd: return "LADD"
+        }
+    }
+
+    var explanation: String {
+        switch self {
+        case .all:
+            return "Every aircraft in range."
+        case .military:
+            return "U on the ADS-B map. readsb sets this from dbFlags & 1 (military)."
+        case .interesting:
+            return "dbFlags & 2. Separate from the U button."
+        case .pia:
+            return "dbFlags & 4. Privacy ICAO address."
+        case .ladd:
+            return "dbFlags & 8. Limiting Aircraft Data Displayed."
+        }
+    }
 }
 
 enum Radar {
@@ -145,6 +234,7 @@ enum FlightParser {
             longitude2: longitude
         )
         let emergency = string(row["emergency"])
+        let flags = number(row["dbFlags"]).map { Int($0) }
         return Aircraft(
             hex: hex.lowercased(),
             callsign: string(row["flight"])?.uppercased() ?? "",
@@ -157,7 +247,15 @@ enum FlightParser {
             latitude: latitude,
             longitude: longitude,
             distanceKm: distance,
-            emergency: emergency
+            emergency: emergency,
+            geometricAltitudeFeet: number(row["alt_geom"]),
+            geometricVerticalRateFPM: number(row["geom_rate"]),
+            squawk: string(row["squawk"]),
+            trueHeadingDegrees: number(row["true_heading"]),
+            magneticHeadingDegrees: number(row["mag_heading"]),
+            category: string(row["category"]),
+            dbFlags: flags,
+            typeDescription: string(row["desc"])
         )
     }
 

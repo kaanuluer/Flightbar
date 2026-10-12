@@ -28,7 +28,7 @@ enum TrafficClient {
     private static func load(url: URL, user: (latitude: Double, longitude: Double)) async -> Result<[Aircraft], TrafficError> {
         var request = URLRequest(url: url)
         request.timeoutInterval = 8
-        request.setValue("Flightbar/1.0 (menu bar)", forHTTPHeaderField: "User-Agent")
+        request.setValue("Flightbar/1.2 (menu bar)", forHTTPHeaderField: "User-Agent")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
