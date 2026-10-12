@@ -17,29 +17,29 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.1</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>14.0</string>
 	<key>LSUIElement</key>
 	<string>1</string>
+	<key>NSSupportsAutomaticTermination</key>
+	<false/>
 	<key>NSHighResolutionCapable</key>
 	<true/>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>NSLocationUsageDescription</key>
-	<string>Flightbar uses your location to show aircraft within 3 km of you in the menu bar.</string>
+	<string>Flightbar uses your location while it is open to show aircraft within the range you chose. Your position stays on this Mac.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Flightbar uses your location to show aircraft within 3 km of you in the menu bar.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Flightbar uses your location to show aircraft within 3 km of you in the menu bar.</string>
+	<string>Flightbar uses your location while it is open to show aircraft within the range you chose. Your position stays on this Mac.</string>
 	<key>NSLocationDefaultAccuracyReduced</key>
 	<false/>
 	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
 	<dict>
 		<key>FlightbarPrecise</key>
-		<string>Precise location is required to distinguish aircraft within 3 km.</string>
+		<string>Precise location lets Flightbar tell aircraft a few kilometers apart. Your position stays on this Mac.</string>
 	</dict>
 </dict>
 </plist>

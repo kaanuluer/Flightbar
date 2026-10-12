@@ -8,7 +8,6 @@ swiftc -parse-as-library -O -target arm64-apple-macos14.0 \
   -framework AppKit \
   -framework SwiftUI \
   -framework CoreLocation \
-  -framework ApplicationServices \
   -framework QuartzCore \
   -o "$APP/Contents/MacOS/Flightbar" \
   Sources/*.swift
