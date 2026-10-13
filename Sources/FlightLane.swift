@@ -57,6 +57,10 @@ final class FlightLane {
     private var card: NSPanel?
     private var cardEffect: NSVisualEffectView?
     private var cardHost: NSHostingView<FlightCardView>?
+    private var displayedDetails: AircraftDetails?
+    private var detailsAircraftKey: String?
+    private var detailsRevision = -1
+    private var nextDetailsRefresh = Date.distantPast
     private var forcedHoverID: UUID?
 
     private func drain() {
@@ -278,8 +282,20 @@ final class FlightLane {
 
     private func showCard(for sprite: Sprite) {
         let host = cardHost ?? makeCard()
-        if host.rootView.aircraft != sprite.aircraft {
+        let store = AircraftDetailsStore.shared
+        if detailsAircraftKey != sprite.aircraft.detailsKey || detailsRevision != store.revision || Date() >= nextDetailsRefresh {
+            detailsAircraftKey = sprite.aircraft.detailsKey
+            detailsRevision = store.revision
+            nextDetailsRefresh = Date().addingTimeInterval(30)
+            Task { await store.load(sprite.aircraft) }
+        }
+        let details = store.entries[sprite.aircraft.detailsKey]
+        let aircraftChanged = host.rootView.aircraft != sprite.aircraft
+        if aircraftChanged {
             host.rootView = FlightCardView(aircraft: sprite.aircraft)
+        }
+        if aircraftChanged || displayedDetails != details {
+            displayedDetails = details
             host.layoutSubtreeIfNeeded()
             var size = host.fittingSize
             if size.width < 220 { size.width = 286 }

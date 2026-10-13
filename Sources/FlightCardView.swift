@@ -2,6 +2,13 @@ import SwiftUI
 
 struct FlightCardView: View {
     let aircraft: Aircraft
+    @ObservedObject private var detailsStore = AircraftDetailsStore.shared
+
+    private var details: AircraftDetails? { detailsStore.entries[aircraft.detailsKey] }
+    private var identity: String? {
+        let parts = [details?.airline ?? aircraft.airlineName, aircraft.registration].compactMap { $0 }
+        return parts.isEmpty ? nil : parts.joined(separator: " · ")
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -15,13 +22,13 @@ struct FlightCardView: View {
                     .font(.system(size: 12, weight: .medium).monospacedDigit())
                     .foregroundStyle(.white.opacity(0.72))
             }
-            if let identity = aircraft.identityLine {
+            if let identity {
                 Text(identity)
                     .font(.system(size: 12, weight: .regular))
                     .foregroundStyle(.white.opacity(0.78))
                     .lineLimit(1)
             }
-            Text(aircraft.typeName)
+            Text(details?.model ?? aircraft.typeName)
                 .font(.system(size: 12, weight: .medium))
                 .foregroundStyle(.white.opacity(0.9))
                 .lineLimit(1)
@@ -30,6 +37,22 @@ struct FlightCardView: View {
                 .fill(.white.opacity(0.14))
                 .frame(height: 1)
                 .padding(.vertical, 2)
+
+            if let owner = details?.owner { fact("Owner", owner) }
+            if let country = details?.country { fact("Country", country) }
+            if let route = details?.liveRoute {
+                fact("Route", route)
+                Text("Current flight · FlightAware")
+                    .font(.system(size: 10)).foregroundStyle(.white.opacity(0.5))
+            } else if let route = details?.route {
+                fact("Route", route)
+                Text("Database route · unconfirmed for this flight")
+                    .font(.system(size: 10)).foregroundStyle(.white.opacity(0.5))
+            }
+            if let status = details?.status { fact("Status", status) }
+            if let arrival = details?.arrival {
+                fact("Arrival", arrival.formatted(date: .omitted, time: .shortened) + " local")
+            }
 
             fact("Altitude", aircraft.altitudeText)
             fact("Speed", aircraft.speedText)
@@ -40,6 +63,26 @@ struct FlightCardView: View {
                 Text("Emergency · \(emergency.uppercased())")
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundStyle(.orange)
+            }
+            HStack {
+                if let url = aircraft.moreInfoURL {
+                    Link("More info…", destination: url)
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundStyle(.cyan)
+                        .help("Open aircraft or flight details in your browser")
+                }
+                Spacer()
+                if details?.loading == true {
+                    ProgressView().controlSize(.mini)
+                } else if details?.model != nil || details?.owner != nil || details?.route != nil {
+                    Text("adsbdb").font(.system(size: 10)).foregroundStyle(.white.opacity(0.5))
+                }
+            }
+            if let message = details?.message {
+                Text(message).font(.system(size: 10)).foregroundStyle(.white.opacity(0.5))
+            }
+            if let message = details?.flightAwareMessage {
+                Text(message).font(.system(size: 10)).foregroundStyle(.white.opacity(0.5))
             }
         }
         .padding(.horizontal, 14)
