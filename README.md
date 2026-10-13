@@ -11,8 +11,8 @@ macOS 14 or later · Apple silicon. There is no Intel build.
 ## Install
 
 1. Unzip the file and move Flightbar to the Applications folder.
-2. If macOS cannot verify the app, right-click Flightbar and choose Open.
-3. Allow location access. Precise location is required for the range.
+2. Open Flightbar. The download is notarized, so macOS can verify it.
+3. Allow location when asked. That is the only permission, and it is used while Flightbar is open.
 
 ## What it shows
 
