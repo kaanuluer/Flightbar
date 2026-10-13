@@ -82,11 +82,13 @@ struct PreferencesView: View {
     private var sourceLine: String {
         switch model.placeSource {
         case .device:
-            return "Using Location Services."
+            return localized("Using Location Services.")
         case .manual:
-            return model.manualLabel.isEmpty ? "Using a place you entered." : "Using \(model.manualLabel)."
+            return model.manualLabel.isEmpty
+                ? localized("Using a place you entered.")
+                : localized("Using %@.", model.manualLabel)
         case .unset:
-            return "Choose Location Services, or enter a place. Flightbar works without Location Services."
+            return localized("Choose Location Services, or enter a place. Flightbar works without Location Services.")
         }
     }
 }

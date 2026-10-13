@@ -21,6 +21,8 @@ targets:
     sources:
       - path: Sources
       - path: Resources/Assets.xcassets
+      - path: Resources/en.lproj
+      - path: Resources/tr.lproj
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.uluersolutions.flightbar

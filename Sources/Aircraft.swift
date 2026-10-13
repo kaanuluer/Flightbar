@@ -40,7 +40,7 @@ struct Aircraft: Identifiable, Equatable {
             return name
         }
         if let typeCode, !typeCode.isEmpty { return typeCode }
-        return "Unknown type"
+        return localized("Unknown type")
     }
 
     var identityLine: String? {
@@ -56,13 +56,13 @@ struct Aircraft: Identifiable, Equatable {
     }
 
     var altitudeText: String {
-        guard let altitudeFeet else { return "Unknown" }
+        guard let altitudeFeet else { return localized("Unknown") }
         let meters = altitudeFeet * 0.3048
         return "\(Self.whole.string(from: NSNumber(value: altitudeFeet)) ?? "\(Int(altitudeFeet))") ft · \(Self.whole.string(from: NSNumber(value: meters)) ?? "\(Int(meters))") m"
     }
 
     var speedText: String {
-        guard let groundSpeedKnots else { return "Unknown" }
+        guard let groundSpeedKnots else { return localized("Unknown") }
         let kmh = groundSpeedKnots * 1.852
         let knots = Self.whole.string(from: NSNumber(value: groundSpeedKnots)) ?? "\(Int(groundSpeedKnots))"
         let speed = Self.whole.string(from: NSNumber(value: kmh)) ?? "\(Int(kmh))"
@@ -70,24 +70,24 @@ struct Aircraft: Identifiable, Equatable {
     }
 
     var headingText: String {
-        guard let trackDegrees else { return "Unknown" }
+        guard let trackDegrees else { return localized("Unknown") }
         return Self.direction(trackDegrees)
     }
 
     static func direction(_ degrees: Double) -> String {
         let normalized = (degrees.truncatingRemainder(dividingBy: 360) + 360)
             .truncatingRemainder(dividingBy: 360)
-        let names = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+        let names = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"].map { localized($0) }
         let index = Int((normalized + 22.5) / 45.0) % 8
         return String(format: "%03.0f° %@", normalized, names[index])
     }
 
     var verticalText: String {
-        guard let verticalRateFPM else { return "Unknown" }
-        if abs(verticalRateFPM) < 64 { return "Level" }
+        guard let verticalRateFPM else { return localized("Unknown") }
+        if abs(verticalRateFPM) < 64 { return localized("Level") }
         let amount = Self.whole.string(from: NSNumber(value: abs(verticalRateFPM))) ?? "\(Int(abs(verticalRateFPM)))"
-        if verticalRateFPM > 0 { return "Climbing · \(amount) ft/min" }
-        return "Descending · \(amount) ft/min"
+        if verticalRateFPM > 0 { return localized("Climbing · %@ ft/min", amount) }
+        return localized("Descending · %@ ft/min", amount)
     }
 
     var menuLine: String {
@@ -108,7 +108,8 @@ struct Aircraft: Identifiable, Equatable {
     }
 
     var positionText: String {
-        String(format: "%.5f, %.5f", latitude, longitude)
+        // Fixed decimals so the line can be pasted back into the place field.
+        String(format: "%.5f, %.5f", locale: Locale(identifier: "en_US_POSIX"), arguments: [latitude, longitude])
     }
 
     /// Letters match readsb's dbFlags bitfield, which adsb.lol and adsb.fi forward.
@@ -116,10 +117,10 @@ struct Aircraft: Identifiable, Equatable {
     var flagLabels: [String] {
         let flags = dbFlags ?? 0
         var labels: [String] = []
-        if flags & 1 != 0 { labels.append("Military (U)") }
-        if flags & 2 != 0 { labels.append("Interesting") }
-        if flags & 4 != 0 { labels.append("PIA") }
-        if flags & 8 != 0 { labels.append("LADD") }
+        if flags & 1 != 0 { labels.append(localized("Military (U)")) }
+        if flags & 2 != 0 { labels.append(localized("Interesting")) }
+        if flags & 4 != 0 { labels.append(localized("PIA")) }
+        if flags & 8 != 0 { labels.append(localized("LADD")) }
         return labels
     }
 
@@ -140,7 +141,7 @@ struct Aircraft: Identifiable, Equatable {
 
     private static let whole: NumberFormatter = {
         let formatter = NumberFormatter()
-        formatter.locale = Locale(identifier: "en_US")
+        formatter.locale = Locale.current
         formatter.numberStyle = .decimal
         formatter.maximumFractionDigits = 0
         return formatter
@@ -148,7 +149,7 @@ struct Aircraft: Identifiable, Equatable {
 
     private static let km: NumberFormatter = {
         let formatter = NumberFormatter()
-        formatter.locale = Locale(identifier: "en_US")
+        formatter.locale = Locale.current
         formatter.numberStyle = .decimal
         formatter.minimumFractionDigits = 1
         formatter.maximumFractionDigits = 1
@@ -169,26 +170,26 @@ enum DbFlagFilter: String, CaseIterable, Identifiable {
 
     var menuTitle: String {
         switch self {
-        case .all: return "All aircraft"
-        case .military: return "Military (U)"
-        case .interesting: return "Interesting"
-        case .pia: return "PIA"
-        case .ladd: return "LADD"
+        case .all: return localized("All aircraft")
+        case .military: return localized("Military (U)")
+        case .interesting: return localized("Interesting")
+        case .pia: return localized("PIA")
+        case .ladd: return localized("LADD")
         }
     }
 
     var explanation: String {
         switch self {
         case .all:
-            return "Every aircraft in range."
+            return localized("Every aircraft in range.")
         case .military:
-            return "U on the ADS-B map. readsb sets this from dbFlags & 1 (military)."
+            return localized("U on the ADS-B map. readsb sets this from dbFlags & 1 (military).")
         case .interesting:
-            return "dbFlags & 2. Separate from the U button."
+            return localized("dbFlags & 2. Separate from the U button.")
         case .pia:
-            return "dbFlags & 4. Privacy ICAO address."
+            return localized("dbFlags & 4. Privacy ICAO address.")
         case .ladd:
-            return "dbFlags & 8. Limiting Aircraft Data Displayed."
+            return localized("dbFlags & 8. Limiting Aircraft Data Displayed.")
         }
     }
 }

@@ -72,7 +72,7 @@ struct FlightCardView: View {
             fact("Position", aircraft.positionText)
 
             if aircraft.hasEmergency, let emergency = aircraft.emergency {
-                Text("Emergency · \(emergency.uppercased())")
+                Text(localized("Emergency · %@", emergency.uppercased()))
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundStyle(.orange)
             }
@@ -86,7 +86,7 @@ struct FlightCardView: View {
 
     private func fact(_ label: String, _ value: String) -> some View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
-            Text(label)
+            Text(localized(label))
                 .font(.system(size: 11, weight: .medium))
                 .foregroundStyle(.white.opacity(0.62))
                 .frame(width: 78, alignment: .leading)
@@ -100,9 +100,9 @@ struct FlightCardView: View {
     }
 
     private static func rate(_ feetPerMinute: Double) -> String {
-        if abs(feetPerMinute) < 64 { return "Level" }
+        if abs(feetPerMinute) < 64 { return localized("Level") }
         let amount = Int(abs(feetPerMinute).rounded())
-        if feetPerMinute > 0 { return "Climbing · \(amount) ft/min" }
-        return "Descending · \(amount) ft/min"
+        if feetPerMinute > 0 { return localized("Climbing · %@ ft/min", "\(amount)") }
+        return localized("Descending · %@ ft/min", "\(amount)")
     }
 }

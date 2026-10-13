@@ -15,14 +15,14 @@ enum PlaneTint: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .white: return "White"
-        case .yellow: return "Yellow"
-        case .orange: return "Orange"
-        case .red: return "Red"
-        case .green: return "Green"
-        case .cyan: return "Cyan"
-        case .blue: return "Blue"
-        case .purple: return "Purple"
+        case .white: return localized("White")
+        case .yellow: return localized("Yellow")
+        case .orange: return localized("Orange")
+        case .red: return localized("Red")
+        case .green: return localized("Green")
+        case .cyan: return localized("Cyan")
+        case .blue: return localized("Blue")
+        case .purple: return localized("Purple")
         }
     }
 

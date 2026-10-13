@@ -137,7 +137,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
             backing: .buffered,
             defer: false
         )
-        window.title = "Preferences"
+        window.title = localized("Preferences")
         window.contentView = host
         window.isReleasedWhenClosed = false
         window.delegate = self
@@ -153,7 +153,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
         let appItem = NSMenuItem()
         main.addItem(appItem)
         let appMenu = NSMenu()
-        let quit = NSMenuItem(title: "Quit Flightbar", action: #selector(quit(_:)), keyEquivalent: "q")
+        let quit = NSMenuItem(title: localized("Quit Flightbar"), action: #selector(quit(_:)), keyEquivalent: "q")
         quit.target = self
         appMenu.addItem(quit)
         appItem.submenu = appMenu
@@ -326,10 +326,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
         addLabel("Flightbar", to: menu, style: .title)
         addLabel(model.statusLine, to: menu, style: .primary)
         addLabel(model.detailLine, to: menu, style: .primary)
-        addLabel("Select an aircraft for its details. The flight across the menu bar is off unless you turn it on.", to: menu, style: .caption)
+        addLabel(localized("Select an aircraft for its details. The flight across the menu bar is off unless you turn it on."), to: menu, style: .caption)
         menu.addItem(.separator())
 
-        let range = NSMenuItem(title: "Range: \(Radar.label(model.radiusKm))", action: nil, keyEquivalent: "")
+        let range = NSMenuItem(title: localized("Range: %@", Radar.label(model.radiusKm)), action: nil, keyEquivalent: "")
         let rangeMenu = NSMenu()
         rangeMenu.autoenablesItems = false
         for kilometers in Radar.radiusChoices {
@@ -342,7 +342,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
         range.submenu = rangeMenu
         menu.addItem(range)
 
-        let color = NSMenuItem(title: "Aircraft color: \(model.planeColor.title)", action: nil, keyEquivalent: "")
+        let color = NSMenuItem(title: localized("Aircraft color: %@", model.planeColor.title), action: nil, keyEquivalent: "")
         let colorMenu = NSMenu()
         colorMenu.autoenablesItems = false
         for tint in PlaneTint.allCases {
@@ -356,7 +356,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
         color.submenu = colorMenu
         menu.addItem(color)
 
-        let flags = NSMenuItem(title: "Flags: \(model.flagFilter.menuTitle)", action: nil, keyEquivalent: "")
+        let flags = NSMenuItem(title: localized("Flags: %@", model.flagFilter.menuTitle), action: nil, keyEquivalent: "")
         let flagsMenu = NSMenu()
         flagsMenu.autoenablesItems = false
         for filter in DbFlagFilter.allCases {
@@ -371,28 +371,28 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
         menu.addItem(flags)
 
         addToggle(
-            model.showsPlaneCount ? "Hide aircraft count" : "Show aircraft count",
+            model.showsPlaneCount ? localized("Hide aircraft count") : localized("Show aircraft count"),
             on: model.showsPlaneCount,
             action: #selector(toggleCount(_:)),
             to: menu
         )
         addToggle(
-            "Fly across the menu bar",
+            localized("Fly across the menu bar"),
             on: model.fliesAcrossMenuBar,
             action: #selector(toggleFly(_:)),
             to: menu
         )
         addToggle(
-            "Notify when an aircraft enters",
+            localized("Notify when an aircraft enters"),
             on: model.notificationsEnabled,
             action: #selector(toggleNotify(_:)),
             to: menu
         )
-        addAction("Preferences…", action: #selector(openPreferences(_:)), to: menu)
+        addAction(localized("Preferences…"), action: #selector(openPreferences(_:)), to: menu)
 
         if !model.overhead.isEmpty {
             menu.addItem(.separator())
-            addLabel("Overhead now", to: menu, style: .heading)
+            addLabel(localized("Overhead now"), to: menu, style: .heading)
             for aircraft in model.overhead {
                 addAircraft(aircraft, to: menu)
             }
@@ -402,20 +402,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
         }
         if !passed.isEmpty {
             menu.addItem(.separator())
-            addLabel("Just entered", to: menu, style: .heading)
+            addLabel(localized("Just entered"), to: menu, style: .heading)
             for aircraft in passed {
                 addAircraft(aircraft, to: menu)
             }
         }
 
         menu.addItem(.separator())
-        addAction("Show sample aircraft", action: #selector(sampleFlight(_:)), to: menu)
-        addAction("Check now", action: #selector(checkNow(_:)), to: menu)
+        addAction(localized("Show sample aircraft"), action: #selector(sampleFlight(_:)), to: menu)
+        addAction(localized("Check now"), action: #selector(checkNow(_:)), to: menu)
         if model.showsLocationSettings {
-            addAction("Open Location Settings", action: #selector(openLocationSettings(_:)), to: menu)
+            addAction(localized("Open Location Settings"), action: #selector(openLocationSettings(_:)), to: menu)
         }
         menu.addItem(.separator())
-        let quit = addAction("Quit", action: #selector(quit(_:)), to: menu)
+        let quit = addAction(localized("Quit"), action: #selector(quit(_:)), to: menu)
         quit.keyEquivalent = "q"
     }
 

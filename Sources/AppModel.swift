@@ -17,8 +17,8 @@ final class AppModel: ObservableObject {
     @Published private(set) var authorization: CLAuthorizationStatus = .notDetermined
     @Published private(set) var overhead: [Aircraft] = []
     @Published private(set) var recent: [Aircraft] = []
-    @Published private(set) var statusLine = "Waiting for location access"
-    @Published private(set) var detailLine = "Radius 3 km"
+    @Published private(set) var statusLine = localized("Waiting for location access")
+    @Published private(set) var detailLine = localized("Radius %@", "3 km")
     @Published var radiusKm: Double = 3 {
         didSet {
             guard radiusKm != oldValue else { return }
@@ -64,7 +64,7 @@ final class AppModel: ObservableObject {
                     self.suppressNotificationWrite = true
                     self.notificationsEnabled = false
                     self.suppressNotificationWrite = false
-                    self.placeNote = "Notifications stay off until they’re allowed in System Settings → Notifications."
+                    self.placeNote = localized("Notifications stay off until they’re allowed in System Settings → Notifications.")
                 }
             }
         }
@@ -214,19 +214,19 @@ final class AppModel: ObservableObject {
     func useTypedPlace(_ text: String) {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else {
-            placeNote = "Enter a city, a postal code, or latitude, longitude."
+            placeNote = localized("Enter a city, a postal code, or latitude, longitude.")
             return
         }
         if let coordinate = CoordinateEntry.parse(trimmed) {
             useCoordinates(CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude), label: trimmed)
             return
         }
-        placeNote = "Looking up \(trimmed)… A city or postal code is sent to Apple’s geocoder."
+        placeNote = localized("Looking up %@. A city or postal code is sent to Apple’s geocoder.", trimmed)
         CLGeocoder().geocodeAddressString(trimmed) { [weak self] marks, _ in
             Task { @MainActor in
                 guard let self else { return }
                 guard let location = marks?.first?.location else {
-                    self.placeNote = "Couldn’t find that place. Try a city, a postal code, or latitude, longitude."
+                    self.placeNote = localized("Couldn’t find that place. Try a city, a postal code, or latitude, longitude.")
                     return
                 }
                 let mark = marks?.first
@@ -248,7 +248,7 @@ final class AppModel: ObservableObject {
         UserDefaults.standard.set(location.coordinate.longitude, forKey: Keys.manualLon)
         UserDefaults.standard.set(label, forKey: Keys.manualLabel)
         self.location = location
-        placeNote = "Using \(label). Location Services is not used."
+        placeNote = localized("Using %@. Location Services is not used.", label)
         refreshLabels()
         Task { await poll() }
     }
@@ -269,11 +269,11 @@ final class AppModel: ObservableObject {
         if placeSource == .device {
             switch status {
             case .authorized, .authorizedAlways:
-                placeNote = "Using Location Services."
+                placeNote = localized("Using Location Services.")
             case .denied, .restricted:
-                placeNote = "Location access is off. Turn it on in Location Settings, or enter a place."
+                placeNote = localized("Location access is off. Turn it on in Location Settings, or enter a place.")
             case .notDetermined:
-                placeNote = "macOS will ask for location while Flightbar is open."
+                placeNote = localized("macOS will ask for location while Flightbar is open.")
             default:
                 break
             }
@@ -297,7 +297,7 @@ final class AppModel: ObservableObject {
               (-90...90).contains(latitude),
               (-180...180).contains(longitude) else { return }
         location = CLLocation(latitude: latitude, longitude: longitude)
-        placeNote = manualLabel.isEmpty ? "Using a saved place." : "Using \(manualLabel)."
+        placeNote = manualLabel.isEmpty ? localized("Using a saved place.") : localized("Using %@.", manualLabel)
         Task { await poll() }
     }
 
@@ -414,7 +414,7 @@ final class AppModel: ObservableObject {
             guard haystack.contains(query.lowercased()) else { return }
         }
         let content = UNMutableNotificationContent()
-        content.title = "\(aircraft.callsignDisplay) entered"
+        content.title = localized("%@ entered", aircraft.callsignDisplay)
         var parts = [aircraft.typeName, aircraft.distanceText, aircraft.altitudeText]
         if !aircraft.flagLabels.isEmpty {
             parts.append(aircraft.flagLabels.joined(separator: ", "))
@@ -429,36 +429,45 @@ final class AppModel: ObservableObject {
     }
 
     private func refreshLabels() {
+        let range = Radar.label(radiusKm)
         if placeSource == .unset && location == nil {
             if authorization == .denied || authorization == .restricted {
-                statusLine = "Location access is off. Enter a place instead."
+                statusLine = localized("Location access is off. Enter a place instead.")
             } else {
-                statusLine = "Choose Location Services or enter a place"
+                statusLine = localized("Choose Location Services or enter a place")
             }
         } else if placeSource == .device && (authorization == .denied || authorization == .restricted) {
-            statusLine = "Location access is off. Enter a place instead."
+            statusLine = localized("Location access is off. Enter a place instead.")
         } else if location == nil {
-            statusLine = placeSource == .device ? "Getting your location" : "Choose Location Services or enter a place"
+            statusLine = placeSource == .device
+                ? localized("Getting your location")
+                : localized("Choose Location Services or enter a place")
         } else if overhead.isEmpty {
-            statusLine = "Watching\(placePhrase) · no aircraft within \(Radar.label(radiusKm))\(filterPhrase)"
+            statusLine = localized("Watching%1$@ · no aircraft within %2$@%3$@", placePhrase, range, filterPhrase)
         } else if overhead.count == 1 {
-            statusLine = "Watching\(placePhrase) · 1 aircraft within \(Radar.label(radiusKm))\(filterPhrase)"
+            statusLine = localized("Watching%1$@ · 1 aircraft within %2$@%3$@", placePhrase, range, filterPhrase)
         } else {
-            statusLine = "Watching\(placePhrase) · \(overhead.count) aircraft within \(Radar.label(radiusKm))\(filterPhrase)"
+            statusLine = localized(
+                "Watching%1$@ · %2$@ aircraft within %3$@%4$@",
+                placePhrase,
+                "\(overhead.count)",
+                range,
+                filterPhrase
+            )
         }
 
         if let lastError, lastUpdate == nil || Date().timeIntervalSince(lastUpdate ?? .distantPast) > 20 {
             detailLine = lastError
         } else if let lastUpdate {
-            detailLine = "Last check \(Self.time.string(from: lastUpdate))"
+            detailLine = localized("Last check %@", Self.time.string(from: lastUpdate))
         } else {
-            detailLine = "Radius \(Radar.label(radiusKm))"
+            detailLine = localized("Radius %@", range)
         }
     }
 
     private var placePhrase: String {
         guard placeSource == .manual, !manualLabel.isEmpty else { return "" }
-        return " near \(manualLabel)"
+        return localized(" near %@", manualLabel)
     }
 
     private var filterPhrase: String {
@@ -481,7 +490,7 @@ final class AppModel: ObservableObject {
 
     private static let time: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "en_US")
+        formatter.locale = Locale.current
         formatter.timeStyle = .medium
         return formatter
     }()

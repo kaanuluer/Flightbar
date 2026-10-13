@@ -55,9 +55,9 @@ enum TrafficError: Error {
     var message: String {
         switch self {
         case .network, .badResponse:
-            return "Couldn’t load aircraft data. Will try again."
+            return localized("Couldn’t load aircraft data. Will try again.")
         case .rateLimited:
-            return "The data source is busy. Will try again shortly."
+            return localized("The data source is busy. Will try again shortly.")
         }
     }
 }

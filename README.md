@@ -16,6 +16,10 @@ macOS 14 or later · Apple silicon. There is no Intel build.
 
 The menu bar icon is a top-down aircraft. It is a template image, so it turns dark or light with the menu bar. It does not switch to the Location Services arrow. If that icon is not on screen, Flightbar opens a window. Show Menu Bar Icon asks macOS to display it, or turn Flightbar on in System Settings → Menu Bar.
 
+## Language
+
+Flightbar follows the language of the Mac. English and Turkish are included (`en.lproj` and `tr.lproj`). Numbers and the clock use that locale. Coordinates shown on the card, and the ones sent to the aircraft feed, stay in a fixed decimal form so they can be typed back in. The location permission text is translated in `InfoPlist.strings`.
+
 ## Permissions
 
 Flightbar does not ask for a permission at launch.

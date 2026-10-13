@@ -1,0 +1,5 @@
+/* Permission prompts. Keys match Info.plist. */
+
+"NSLocationUsageDescription" = "Flightbar uses your location while it is open, only if you choose Location Services, to show aircraft within the range you chose. Your position stays on this Mac.";
+"NSLocationWhenInUseUsageDescription" = "Flightbar uses your location while it is open, only if you choose Location Services, to show aircraft within the range you chose. Your position stays on this Mac.";
+"FlightbarPrecise" = "Precise location lets Flightbar tell aircraft a few kilometers apart. Your position stays on this Mac.";
