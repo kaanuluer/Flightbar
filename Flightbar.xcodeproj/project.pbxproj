@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BAAAAAAAAAAAAAAAAAAAAA01 /* AircraftDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAAAAAAAAAAAAAAAAAAAA02 /* AircraftDetails.swift */; };
 		0B20DE1245ADF2368794D661 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B80EAA7AB5EF9E08CCC224DD /* Assets.xcassets */; };
 		12076073C8F9EA17BFB19ED0 /* FlightCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC070B25C35F9D6EC7DC384 /* FlightCardView.swift */; };
 		23610C3FAA27865B5C75A829 /* PlaneArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACBF9FBD7A9693A68CD7884 /* PlaneArtwork.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BAAAAAAAAAAAAAAAAAAAAA02 /* AircraftDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AircraftDetails.swift; sourceTree = "<group>"; };
 		080AD0C0B13405A46AC33C18 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		0AC070B25C35F9D6EC7DC384 /* FlightCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightCardView.swift; sourceTree = "<group>"; };
 		32CCAD1B5EEF73DD99AA6FD8 /* FlightbarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightbarApp.swift; sourceTree = "<group>"; };
@@ -40,6 +42,7 @@
 			isa = PBXGroup;
 			children = (
 				719BF8CE941F41B98E734353 /* Aircraft.swift */,
+				BAAAAAAAAAAAAAAAAAAAAA02 /* AircraftDetails.swift */,
 				9E2DA6396FF3D9613CD19FA5 /* AppModel.swift */,
 				EA78D5B482CA10EF2B4C1D57 /* Catalog.swift */,
 				32CCAD1B5EEF73DD99AA6FD8 /* FlightbarApp.swift */,
@@ -150,6 +153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F10F4553ED7EF6B3AE7D3455 /* Aircraft.swift in Sources */,
+				BAAAAAAAAAAAAAAAAAAAAA01 /* AircraftDetails.swift in Sources */,
 				EA1143B62A01A1348702ECC5 /* AppModel.swift in Sources */,
 				550034956AF511C260655F2A /* Catalog.swift in Sources */,
 				12076073C8F9EA17BFB19ED0 /* FlightCardView.swift in Sources */,

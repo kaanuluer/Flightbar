@@ -96,6 +96,7 @@ struct StatusMenu: View {
         }
 
         Divider()
+        Button("FlightAware API key…") { FlightAwareKeychain.configure() }
         Button("Sample flight") { model.preview() }
         Button("Check now") { model.pollNow() }
         if model.showsLocationSettings {
