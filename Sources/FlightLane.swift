@@ -290,7 +290,7 @@ final class FlightLane {
         }
         guard let panel = card, let screen = screen(for: sprite.displayID) else { return }
         let window = windows[sprite.displayID]
-        let bar = window?.frame ?? MenuBarProbe.menuBarRect(for: screen)
+        let bar = window?.frame ?? MenuBarProbe.anchors(for: screen).bar
         let size = panel.frame.size
         let globalX = sprite.startX + (sprite.endX - sprite.startX) * sprite.progress
         var x = globalX - size.width / 2

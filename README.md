@@ -11,8 +11,8 @@ macOS 14 or later · Apple silicon. There is no Intel build.
 ## Install
 
 1. Unzip the file and move Flightbar to the Applications folder.
-2. If macOS cannot verify the app, right-click Flightbar and choose Open.
-3. Allow location access. Precise location is required for the range.
+2. Open Flightbar. The download is notarized, so macOS can verify it.
+3. Allow location when asked. That is the only permission, and it is used while Flightbar is open.
 
 ## What it shows
 
@@ -23,6 +23,14 @@ The flight card shows the callsign, airline, registration, aircraft type, distan
 ## Privacy
 
 Your location stays on this Mac. Distance is calculated locally, between your position and the aircraft. Aircraft positions come from [adsb.lol](https://adsb.lol), with [adsb.fi](https://adsb.fi) as the fallback. There is no account.
+
+## Permissions
+
+Flightbar asks for one thing: location while the app is open. That is how it measures which aircraft are inside the range you chose. If macOS has reduced accuracy on, it asks for precise location for that same measurement. The location prompt explains this.
+
+It does not ask for Device Control and Data Access (the macOS 27 name for Accessibility), screen recording, input monitoring, or automation. Earlier builds read other apps' menu bars to find the clock and the Apple logo, and that is what produced the broad permission prompt. The flight path is now estimated from the screen edges, so that access is gone.
+
+If the menu-bar icon cannot be shown, a small window opens so the app is not only a background process.
 
 ## Build
 

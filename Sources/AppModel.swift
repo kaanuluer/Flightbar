@@ -12,7 +12,6 @@ final class AppModel: ObservableObject {
     @Published private(set) var recent: [Aircraft] = []
     @Published private(set) var statusLine = "Waiting for location access"
     @Published private(set) var detailLine = "Radius 3 km"
-    @Published private(set) var menuSymbol = "location"
     @Published var radiusKm: Double = 3 {
         didSet {
             guard radiusKm != oldValue else { return }
@@ -55,7 +54,6 @@ final class AppModel: ObservableObject {
     }
 
     func start() {
-        MenuBarGeometry.shared.refresh()
         locationService.onAuthorization = { [weak self] status in
             Task { @MainActor in
                 self?.applyAuthorization(status)
@@ -209,13 +207,10 @@ final class AppModel: ObservableObject {
     private func refreshLabels() {
         switch authorization {
         case .denied, .restricted:
-            menuSymbol = "location.slash"
             statusLine = "Location access is off"
         case .notDetermined:
-            menuSymbol = "location"
             statusLine = "Waiting for location access"
         default:
-            menuSymbol = "airplane"
             if location == nil {
                 statusLine = "Getting your location"
             } else if overhead.isEmpty {
