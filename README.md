@@ -24,6 +24,14 @@ The flight card shows the callsign, airline, registration, aircraft type, distan
 
 Your location stays on this Mac. Distance is calculated locally, between your position and the aircraft. Aircraft positions come from [adsb.lol](https://adsb.lol), with [adsb.fi](https://adsb.fi) as the fallback. There is no account.
 
+## Permissions
+
+Flightbar asks for one thing: location while the app is open. That is how it measures which aircraft are inside the range you chose. If macOS has reduced accuracy on, it asks for precise location for that same measurement. The location prompt explains this.
+
+It does not ask for Device Control and Data Access (the macOS 27 name for Accessibility), screen recording, input monitoring, or automation. Earlier builds read other apps' menu bars to find the clock and the Apple logo, and that is what produced the broad permission prompt. The flight path is now estimated from the screen edges, so that access is gone.
+
+If the menu-bar icon cannot be shown, a small window opens so the app is not only a background process.
+
 ## Build
 
 Open `Flightbar.xcodeproj` in Xcode, or run:
