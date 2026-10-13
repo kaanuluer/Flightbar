@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Flightbar — The aircraft overhead, in the menu bar</title>
-  <meta name="description" content="Flightbar flies an aircraft that enters your chosen radius across the macOS menu bar, from the clock to the Apple logo. No account. macOS only.">
+  <meta name="description" content="Flightbar lists the aircraft overhead in the macOS menu bar. Select one for its details. Location Services is optional. macOS only.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -25,8 +25,8 @@
     <section class="hero">
       <div class="wrap">
         <p class="eyebrow">Uluer Solutions · macOS only</p>
-        <h1>From the clock to the Apple logo.</h1>
-        <p class="lede">Flightbar watches the air around you. When an aircraft enters the radius you chose, an icon appears in the menu bar and flies from the clock to the Apple logo. The pointer stops it, and the flight card opens.</p>
+        <h1>The aircraft overhead, in the menu bar.</h1>
+        <p class="lede">Flightbar lists the aircraft inside a radius you choose. Select one for its details. A flight across the menu bar, from the clock toward the Apple logo, is optional and off unless you turn it on.</p>
         <div class="actions">
           <a class="button" href="download/Flightbar.zip" data-download>Download Flightbar</a>
           <p class="meta">macOS 14 or later · Apple silicon</p>
@@ -41,23 +41,23 @@
     <section class="section" id="how">
       <div class="wrap">
         <h2>How it works</h2>
-        <p class="intro">Click the aircraft icon in the menu bar to open the menu. If location access is missing, the status line says so.</p>
+        <p class="intro">Click the aircraft icon in the menu bar to open the menu. On first launch, choose a place.</p>
         <ol class="steps">
           <li>
-            <h3>Location and range</h3>
-            <p>On first launch, allow location access. Keep precise location on; distance is calculated from it. If it is off, turn Flightbar on in System Settings → Privacy &amp; Security → Location Services.</p>
+            <h3>A place, or Location Services</h3>
+            <p>Enter a city, a postal code, or a latitude and longitude. Or choose Location Services. That prompt appears only if you choose it, and Flightbar comes forward first so macOS can show it. The app works without Location Services.</p>
           </li>
           <li>
-            <h3>From the clock to the logo</h3>
-            <p>When an aircraft in the air enters the radius, the icon leaves the clock, travels along the menu bar, and arrives at the Apple logo.</p>
+            <h3>The list</h3>
+            <p>Open the menu for the aircraft inside the range. Select a row to open the details card: callsign, registration, type, altitude (including geometric altitude when the feed sends it), speed, track, heading, squawk, and the database flags.</p>
           </li>
           <li>
-            <h3>The card</h3>
-            <p>Move the pointer onto the icon. The flight pauses. The card shows the callsign, airline, registration, aircraft type, distance, altitude, speed, heading, and whether it is climbing or descending.</p>
+            <h3>The flight, if you want it</h3>
+            <p>Fly across the menu bar is off unless you turn it on. When it is on, an icon leaves the clock and travels toward the Apple logo. The pointer still pauses it.</p>
           </li>
           <li>
             <h3>The menu</h3>
-            <p>Change the range and aircraft color here. Sample flight shows a flight without waiting. Check now refreshes the data. Quit closes the app.</p>
+            <p>Range, color, and the flag filter are here. Show sample aircraft opens a demo card and says so. Check now refreshes the data. The aircraft count and a notification are optional and off until you turn them on.</p>
           </li>
         </ol>
       </div>
@@ -70,15 +70,15 @@
         <div class="shots">
           <figure class="shot-flight">
             <img src="images/menu-bar-flight.png" width="1436" height="66" alt="A red aircraft icon flying toward the clock on the right side of the menu bar.">
-            <figcaption>The aircraft in the menu bar, on the path between the clock and the Apple logo.</figcaption>
+            <figcaption>The optional flight, on the path between the clock and the Apple logo. It stays off unless you turn it on.</figcaption>
           </figure>
           <figure>
             <img src="images/flight-card.png" width="870" height="520" alt="The THY1 flight card under the red aircraft in the menu bar. Turkish Airlines, TC-JJZ, Boeing 777-300ER, 2.4 km, plus altitude, speed, heading, and descent.">
-            <figcaption>The pointer stops the icon. The card shows the callsign, airline, registration, type, distance, altitude, speed, heading, and vertical speed.</figcaption>
+            <figcaption>Select an aircraft for the card. This picture is the card from an earlier build, opened by pausing the flying icon.</figcaption>
           </figure>
           <figure>
             <img src="images/settings-menu.png" width="1070" height="815" alt="The Flightbar menu. Range is set to 20 km, with options from 1 to 50 km open. Aircraft color is Red. Sample flight, Check now, and Quit are visible.">
-            <figcaption>Range and color are in the same menu. The choice is remembered. Sample flight lets you try it right away.</figcaption>
+            <figcaption>Range and color are in the menu. This picture is an earlier menu. Show sample aircraft is the demo, and the card says it is not a live flight.</figcaption>
           </figure>
         </div>
       </div>
@@ -128,12 +128,12 @@
         <h2>Privacy</h2>
         <ul class="privacy">
           <li>
-            <h3>Location stays on this Mac</h3>
-            <p>Your location is not sent to a server. Distance is calculated on this Mac, between your position and the aircraft.</p>
+            <h3>Location Services is optional</h3>
+            <p>Distance is calculated on this Mac. A city or postal code is sent to Apple’s geocoder to become coordinates. Typing latitude and longitude skips that. The aircraft query still sends those coordinates to the public feed so it knows which area to return.</p>
           </li>
           <li>
             <h3>Public flight data</h3>
-            <p>Aircraft are read from adsb.lol. If that does not respond, adsb.fi is used. There is no account, sign-up, or key.</p>
+            <p>Aircraft are read from adsb.lol. If that does not respond, adsb.fi is used. There is no account, sign-up, or key. Flightbar does not ask to control this computer.</p>
           </li>
           <li>
             <h3>Names stay local</h3>
@@ -147,13 +147,13 @@
   <section class="download" id="download">
     <div class="wrap">
       <h2>Download</h2>
-      <p class="intro">macOS only. Requires macOS 14 or later and Apple silicon. There is no separate build for Intel.</p>
+      <p class="intro">macOS only. Requires macOS 14 or later and Apple silicon. There is no separate build for Intel. The app follows the Mac’s language: English and Turkish.</p>
       <a class="button" href="download/Flightbar.zip" data-download>Flightbar.zip</a>
       <p class="download-count" data-download-count hidden></p>
       <ol class="install">
         <li>Unzip the file and move Flightbar to the Applications folder.</li>
         <li>If macOS cannot verify the app, right-click Flightbar and choose Open.</li>
-        <li>Allow location access. Precise location is required for the range.</li>
+        <li>Choose Location Services, or enter a city, a postal code, or a latitude and longitude. Location Services is not required.</li>
       </ol>
     </div>
   </section>

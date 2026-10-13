@@ -1,0 +1,5 @@
+/* Permission prompts. Keys match Info.plist. */
+
+"NSLocationUsageDescription" = "Flightbar, yalnızca Konum Servislerini seçerseniz, seçtiğiniz menzildeki uçakları göstermek için uygulama açıkken konumunuzu kullanır. Konumunuz bu Mac’te kalır.";
+"NSLocationWhenInUseUsageDescription" = "Flightbar, yalnızca Konum Servislerini seçerseniz, seçtiğiniz menzildeki uçakları göstermek için uygulama açıkken konumunuzu kullanır. Konumunuz bu Mac’te kalır.";
+"FlightbarPrecise" = "Hassas konum, Flightbar’ın birkaç kilometre arayla duran uçakları ayırt etmesini sağlar. Konumunuz bu Mac’te kalır.";

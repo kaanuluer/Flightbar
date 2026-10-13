@@ -13,6 +13,15 @@ struct Aircraft: Identifiable, Equatable {
     var longitude: Double
     var distanceKm: Double
     var emergency: String?
+    var geometricAltitudeFeet: Double? = nil
+    var geometricVerticalRateFPM: Double? = nil
+    var squawk: String? = nil
+    var trueHeadingDegrees: Double? = nil
+    var magneticHeadingDegrees: Double? = nil
+    var category: String? = nil
+    var dbFlags: Int? = nil
+    var typeDescription: String? = nil
+    var isSample: Bool = false
 
     var id: String { hex }
 
@@ -31,7 +40,7 @@ struct Aircraft: Identifiable, Equatable {
             return name
         }
         if let typeCode, !typeCode.isEmpty { return typeCode }
-        return "Unknown type"
+        return localized("Unknown type")
     }
 
     var identityLine: String? {
@@ -47,13 +56,13 @@ struct Aircraft: Identifiable, Equatable {
     }
 
     var altitudeText: String {
-        guard let altitudeFeet else { return "Unknown" }
+        guard let altitudeFeet else { return localized("Unknown") }
         let meters = altitudeFeet * 0.3048
         return "\(Self.whole.string(from: NSNumber(value: altitudeFeet)) ?? "\(Int(altitudeFeet))") ft · \(Self.whole.string(from: NSNumber(value: meters)) ?? "\(Int(meters))") m"
     }
 
     var speedText: String {
-        guard let groundSpeedKnots else { return "Unknown" }
+        guard let groundSpeedKnots else { return localized("Unknown") }
         let kmh = groundSpeedKnots * 1.852
         let knots = Self.whole.string(from: NSNumber(value: groundSpeedKnots)) ?? "\(Int(groundSpeedKnots))"
         let speed = Self.whole.string(from: NSNumber(value: kmh)) ?? "\(Int(kmh))"
@@ -61,20 +70,24 @@ struct Aircraft: Identifiable, Equatable {
     }
 
     var headingText: String {
-        guard let trackDegrees else { return "Unknown" }
-        let normalized = (trackDegrees.truncatingRemainder(dividingBy: 360) + 360)
+        guard let trackDegrees else { return localized("Unknown") }
+        return Self.direction(trackDegrees)
+    }
+
+    static func direction(_ degrees: Double) -> String {
+        let normalized = (degrees.truncatingRemainder(dividingBy: 360) + 360)
             .truncatingRemainder(dividingBy: 360)
-        let names = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+        let names = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"].map { localized($0) }
         let index = Int((normalized + 22.5) / 45.0) % 8
         return String(format: "%03.0f° %@", normalized, names[index])
     }
 
     var verticalText: String {
-        guard let verticalRateFPM else { return "Unknown" }
-        if abs(verticalRateFPM) < 64 { return "Level" }
+        guard let verticalRateFPM else { return localized("Unknown") }
+        if abs(verticalRateFPM) < 64 { return localized("Level") }
         let amount = Self.whole.string(from: NSNumber(value: abs(verticalRateFPM))) ?? "\(Int(abs(verticalRateFPM)))"
-        if verticalRateFPM > 0 { return "Climbing · \(amount) ft/min" }
-        return "Descending · \(amount) ft/min"
+        if verticalRateFPM > 0 { return localized("Climbing · %@ ft/min", amount) }
+        return localized("Descending · %@ ft/min", amount)
     }
 
     var menuLine: String {
@@ -86,9 +99,49 @@ struct Aircraft: Identifiable, Equatable {
         return emergency.lowercased() != "none" && !emergency.isEmpty
     }
 
+    var geometricAltitudeText: String? {
+        guard let geometricAltitudeFeet else { return nil }
+        let meters = geometricAltitudeFeet * 0.3048
+        let feet = Self.whole.string(from: NSNumber(value: geometricAltitudeFeet)) ?? "\(Int(geometricAltitudeFeet))"
+        let metric = Self.whole.string(from: NSNumber(value: meters)) ?? "\(Int(meters))"
+        return "\(feet) ft · \(metric) m"
+    }
+
+    var positionText: String {
+        // Fixed decimals so the line can be pasted back into the place field.
+        String(format: "%.5f, %.5f", locale: Locale(identifier: "en_US_POSIX"), arguments: [latitude, longitude])
+    }
+
+    /// Letters match readsb's dbFlags bitfield, which adsb.lol and adsb.fi forward.
+    /// Military is bit 0 (`dbFlags & 1`). That is the aircraft tar1090 keeps when its U button is on.
+    var flagLabels: [String] {
+        let flags = dbFlags ?? 0
+        var labels: [String] = []
+        if flags & 1 != 0 { labels.append(localized("Military (U)")) }
+        if flags & 2 != 0 { labels.append(localized("Interesting")) }
+        if flags & 4 != 0 { labels.append(localized("PIA")) }
+        if flags & 8 != 0 { labels.append(localized("LADD")) }
+        return labels
+    }
+
+    func matches(_ filter: DbFlagFilter) -> Bool {
+        switch filter {
+        case .all:
+            return true
+        case .military:
+            return (dbFlags ?? 0) & 1 != 0
+        case .interesting:
+            return (dbFlags ?? 0) & 2 != 0
+        case .pia:
+            return (dbFlags ?? 0) & 4 != 0
+        case .ladd:
+            return (dbFlags ?? 0) & 8 != 0
+        }
+    }
+
     private static let whole: NumberFormatter = {
         let formatter = NumberFormatter()
-        formatter.locale = Locale(identifier: "en_US")
+        formatter.locale = Locale.current
         formatter.numberStyle = .decimal
         formatter.maximumFractionDigits = 0
         return formatter
@@ -96,12 +149,49 @@ struct Aircraft: Identifiable, Equatable {
 
     private static let km: NumberFormatter = {
         let formatter = NumberFormatter()
-        formatter.locale = Locale(identifier: "en_US")
+        formatter.locale = Locale.current
         formatter.numberStyle = .decimal
         formatter.minimumFractionDigits = 1
         formatter.maximumFractionDigits = 1
         return formatter
     }()
+}
+
+/// readsb database flags, as forwarded by adsb.lol and adsb.fi.
+/// `military` is what the U button on tar1090 filters to (`onlyMilitary`, `dbFlags & 1`).
+enum DbFlagFilter: String, CaseIterable, Identifiable {
+    case all
+    case military
+    case interesting
+    case pia
+    case ladd
+
+    var id: String { rawValue }
+
+    var menuTitle: String {
+        switch self {
+        case .all: return localized("All aircraft")
+        case .military: return localized("Military (U)")
+        case .interesting: return localized("Interesting")
+        case .pia: return localized("PIA")
+        case .ladd: return localized("LADD")
+        }
+    }
+
+    var explanation: String {
+        switch self {
+        case .all:
+            return localized("Every aircraft in range.")
+        case .military:
+            return localized("U on the ADS-B map. readsb sets this from dbFlags & 1 (military).")
+        case .interesting:
+            return localized("dbFlags & 2. Separate from the U button.")
+        case .pia:
+            return localized("dbFlags & 4. Privacy ICAO address.")
+        case .ladd:
+            return localized("dbFlags & 8. Limiting Aircraft Data Displayed.")
+        }
+    }
 }
 
 enum Radar {
@@ -145,6 +235,7 @@ enum FlightParser {
             longitude2: longitude
         )
         let emergency = string(row["emergency"])
+        let flags = number(row["dbFlags"]).map { Int($0) }
         return Aircraft(
             hex: hex.lowercased(),
             callsign: string(row["flight"])?.uppercased() ?? "",
@@ -157,7 +248,15 @@ enum FlightParser {
             latitude: latitude,
             longitude: longitude,
             distanceKm: distance,
-            emergency: emergency
+            emergency: emergency,
+            geometricAltitudeFeet: number(row["alt_geom"]),
+            geometricVerticalRateFPM: number(row["geom_rate"]),
+            squawk: string(row["squawk"]),
+            trueHeadingDegrees: number(row["true_heading"]),
+            magneticHeadingDegrees: number(row["mag_heading"]),
+            category: string(row["category"]),
+            dbFlags: flags,
+            typeDescription: string(row["desc"])
         )
     }
 

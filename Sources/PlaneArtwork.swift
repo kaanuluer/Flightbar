@@ -15,14 +15,14 @@ enum PlaneTint: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .white: return "White"
-        case .yellow: return "Yellow"
-        case .orange: return "Orange"
-        case .red: return "Red"
-        case .green: return "Green"
-        case .cyan: return "Cyan"
-        case .blue: return "Blue"
-        case .purple: return "Purple"
+        case .white: return localized("White")
+        case .yellow: return localized("Yellow")
+        case .orange: return localized("Orange")
+        case .red: return localized("Red")
+        case .green: return localized("Green")
+        case .cyan: return localized("Cyan")
+        case .blue: return localized("Blue")
+        case .purple: return localized("Purple")
         }
     }
 
@@ -143,3 +143,69 @@ enum PlaneArtwork {
         return copy
     }
 }
+
+/// Menu bar mark: a top-down aircraft, not the side-view SF Symbol and not the Location arrow.
+/// Black fill with `isTemplate` so AppKit tints it for light and dark menu bars.
+/// The same outline is `Resources/MenuBarIcon.svg`.
+enum MenuBarMark {
+    static let pointSize = CGSize(width: 18, height: 18)
+
+    /// Outline in an 18×18 box, y increasing downward.
+    static let outline: [CGPoint] = [
+        CGPoint(x: 9.0, y: 1.0),
+        CGPoint(x: 10.5, y: 5.4),
+        CGPoint(x: 16.8, y: 8.0),
+        CGPoint(x: 16.8, y: 10.1),
+        CGPoint(x: 10.7, y: 9.2),
+        CGPoint(x: 10.5, y: 13.2),
+        CGPoint(x: 13.8, y: 16.3),
+        CGPoint(x: 12.2, y: 17.2),
+        CGPoint(x: 9.7, y: 14.7),
+        CGPoint(x: 8.3, y: 14.7),
+        CGPoint(x: 5.8, y: 17.2),
+        CGPoint(x: 4.2, y: 16.3),
+        CGPoint(x: 7.5, y: 13.2),
+        CGPoint(x: 7.3, y: 9.2),
+        CGPoint(x: 1.2, y: 10.1),
+        CGPoint(x: 1.2, y: 8.0),
+        CGPoint(x: 7.5, y: 5.4)
+    ]
+
+    static var templateImage: NSImage {
+        if let cached = cache { return cached }
+        let image = NSImage(size: pointSize, flipped: false) { rect in
+            NSColor.black.setFill()
+            let path = NSBezierPath()
+            guard let first = outline.first else { return false }
+            // Outline is y-down. AppKit images are y-up, so the nose stays at the top.
+            path.move(to: CGPoint(x: first.x, y: rect.height - first.y))
+            for point in outline.dropFirst() {
+                path.line(to: CGPoint(x: point.x, y: rect.height - point.y))
+            }
+            path.close()
+            path.fill()
+            return true
+        }
+        image.isTemplate = true
+        cache = image
+        return image
+    }
+
+    private static var cache: NSImage?
+}
+
+struct MenuBarMarkShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        let sx = rect.width / MenuBarMark.pointSize.width
+        let sy = rect.height / MenuBarMark.pointSize.height
+        var path = Path()
+        guard let first = MenuBarMark.outline.first else { return path }
+        path.move(to: CGPoint(x: rect.minX + first.x * sx, y: rect.minY + first.y * sy))
+        for point in MenuBarMark.outline.dropFirst() {
+            path.addLine(to: CGPoint(x: rect.minX + point.x * sx, y: rect.minY + point.y * sy))
+        }
+        path.closeSubpath()
+        return path
+    }
+}
+

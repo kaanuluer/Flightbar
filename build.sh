@@ -8,11 +8,12 @@ swiftc -parse-as-library -O -target arm64-apple-macos14.0 \
   -framework AppKit \
   -framework SwiftUI \
   -framework CoreLocation \
-  -framework ApplicationServices \
   -framework QuartzCore \
+  -framework UserNotifications \
   -o "$APP/Contents/MacOS/Flightbar" \
   Sources/*.swift
 mkdir -p "$APP/Contents/Resources"
+cp -R Resources/en.lproj Resources/tr.lproj "$APP/Contents/Resources/"
 cp Info.plist "$APP/Contents/Info.plist"
 cp Resources/Flightbar.icns "$APP/Contents/Resources/Flightbar.icns"
 /usr/libexec/PlistBuddy -c "Add :CFBundleIconFile string Flightbar" "$APP/Contents/Info.plist"

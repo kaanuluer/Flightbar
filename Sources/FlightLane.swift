@@ -17,6 +17,34 @@ final class FlightLane {
         launch(aircraft, pinned: true)
     }
 
+    /// Opens the details card without flying an icon across the menu bar.
+    func showDetails(_ aircraft: Aircraft, under anchor: NSPoint?) {
+        pinnedDetails = true
+        let host = cardHost ?? makeCard()
+        host.rootView = FlightCardView(aircraft: aircraft)
+        let width: CGFloat = 320
+        host.frame = NSRect(x: 0, y: 0, width: width, height: 10)
+        host.layoutSubtreeIfNeeded()
+        var size = host.fittingSize
+        if size.width < width { size.width = width }
+        if size.height < 160 { size.height = max(160, size.height) }
+        host.frame = NSRect(origin: .zero, size: size)
+        card?.setContentSize(size)
+        cardEffect?.frame = NSRect(origin: .zero, size: size)
+        guard let panel = card else { return }
+        let screen = NSScreen.screens.first { display in
+            if let anchor { return display.frame.contains(anchor) }
+            return false
+        } ?? NSScreen.main ?? NSScreen.screens.first
+        guard let screen else { return }
+        let bar = MenuBarProbe.menuBarRect(for: screen)
+        var x = (anchor?.x ?? screen.frame.midX) - size.width / 2
+        x = min(max(screen.frame.minX + 8, x), screen.frame.maxX - size.width - 8)
+        let y = max(screen.frame.minY + 8, bar.minY - size.height - 6)
+        panel.setFrame(NSRect(x: x, y: y, width: size.width, height: size.height), display: true)
+        if !panel.isVisible { panel.orderFrontRegardless() }
+    }
+
     func applyTint(_ tint: PlaneTint) {
         for sprite in sprites {
             let pointingLeft = sprite.endX <= sprite.startX
@@ -58,6 +86,7 @@ final class FlightLane {
     private var cardEffect: NSVisualEffectView?
     private var cardHost: NSHostingView<FlightCardView>?
     private var forcedHoverID: UUID?
+    private var pinnedDetails = false
 
     private func drain() {
         guard !drainScheduled, !pending.isEmpty else { return }
@@ -229,7 +258,9 @@ final class FlightLane {
             }
         }
 
-        if let hoveredID, let sprite = sprites.first(where: { $0.id == hoveredID }) {
+        if pinnedDetails {
+            // The selected-aircraft card stays up. Hover does not replace it.
+        } else if let hoveredID, let sprite = sprites.first(where: { $0.id == hoveredID }) {
             showCard(for: sprite)
         } else {
             card?.orderOut(nil)
@@ -246,7 +277,7 @@ final class FlightLane {
         if sprites.isEmpty {
             timer?.invalidate()
             timer = nil
-            card?.orderOut(nil)
+            if !pinnedDetails { card?.orderOut(nil) }
             hoveredID = nil
             for window in windows.values { window.orderOut(nil) }
         }
